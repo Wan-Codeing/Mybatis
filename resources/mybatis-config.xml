@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+  <!-- setting : MyBatis 구동시 선언할 설정들을 작성하는 영역 -->
+  <settings>
+  		<!-- 만약에 데이터가 넘어오지않으면 NULL로 인식하겠다 -->
+		<setting name="jdbcTypeForNull" value="NULL"/>  
+  </settings>
+  
+  <!-- typeAlias : VO/DTO 클래스들의 풀 클래스명을 단순한 클래스명으로 사용하기 위해서 별칭을 등록할 수 있는 영역 -->
+  <typeAliases>
+  		<typeAlias type="com.kh.member.model.vo.Member" alias="member"/>
+  </typeAliases>
+  
+  <!-- 
+  	environments : MyBatis에서 연동할 DB정보들을 등록하는 영역(여러개의 DB정보를 증록가능하다ㅏ
+  	=> default속성으로 여러개의 id중 어떤 db를 기본 db로 사용할건지 설정해줘야 한다
+   -->
+  <environments default="development">
+    <environment id="development">
+    
+      <!-- 
+    	transactionManager : JDBC, MANAGED 둘중 하나를 선택할수 있다
+    	- JDBC : 트랙잭션괄리를 직접 내가 하겠다(수동 COMMIT)
+    	- MANAGED : 개발자가 트랙잭션에 대해서 어떠한 영향도 행사하지 않겠다(자동 COMMIT)
+       -->
+      <transactionManager type="JDBC"/>
+      
+      <!-- 
+      	dataSource : POOLED, UNPOOLED둘중 하나를 선택할수 있다(ConnectionPool 사용 여부)
+      	- ConnectionPool : Connection객체를 담아둘 수 있는 영역, 한번 생성된 Connection객체를 담아두면 재사용해서 쓸수 있음
+      	
+      	=> POOLED : ConnectionPool을 쓰겠다.
+      	=> UNPOOLED : ConnectionPool을 안쓰겠다.
+       -->
+      <dataSource type="POOLED">
+        <property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+        <property name="username" value="MYBATIS"/>
+        <property name="password" value="MYBATIS"/>
+      </dataSource>
+    </environment>
+  </environments>
+  
+  <!-- mapper : 실행할 SQL문들을 기록해둔 mapper파일들을 등록하는 영역 -->
+  <mappers>
+    <mapper resource="/mappers/member-mapper.xml"/>
+    <mapper resource="/mappers/board-mapper.xml"/>
+  </mappers>
+</configuration>
